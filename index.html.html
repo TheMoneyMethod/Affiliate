@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is Affiliate Marketing Right For Me? | The Digital Method</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-header h1 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .quiz-header p {
+            color: #718096;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            color: #2d3748;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .option {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+        
+        .option input[type="radio"] {
+            margin-top: 3px;
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+        
+        .option-text {
+            color: #2d3748;
+            font-size: 16px;
+            flex: 1;
+            line-height: 1.5;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        
+        .btn-back:hover {
+            background: #cbd5e0;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results-container {
+            display: none;
+        }
+        
+        .results-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-title {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .result-subtitle {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .result-content {
+            text-align: left;
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .result-section {
+            margin-bottom: 30px;
+        }
+        
+        .result-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .result-section h3 {
+            color: #2d3748;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result-section p {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .result-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .result-section li {
+            color: #4a5568;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .result-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .result-section.challenges li:before {
+            content: "⚠";
+            color: #ed8936;
+        }
+        
+        .challenge-box {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .challenge-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .challenge-box p {
+            color: #742a2a;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .action-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .action-box h4 {
+            color: #22543d;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .action-box p {
+            color: #276749;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .action-box ol {
+            margin-left: 20px;
+            color: #276749;
+        }
+        
+        .action-box li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .btn-restart {
+            background: #667eea;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-restart:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .quiz-container {
+                padding: 25px;
+            }
+            
+            .quiz-header h1 {
+                font-size: 24px;
+            }
+            
+            .quiz-header p {
+                font-size: 14px;
+            }
+            
+            .question-text {
+                font-size: 18px;
+            }
+            
+            .option {
+                padding: 15px;
+            }
+            
+            .option-text {
+                font-size: 15px;
+            }
+            
+            .result-title {
+                font-size: 26px;
+            }
+            
+            .result-subtitle {
+                font-size: 16px;
+            }
+            
+            .result-content {
+                padding: 20px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-back {
+                order: 2;
+            }
+            
+            .btn-next {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Is Affiliate Marketing Right For Me?</h1>
+            <p>Answer 10 quick questions to get your personalized action plan</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <div id="quizContent"></div>
+        
+        <div class="results-container" id="results"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "What's your current situation?",
+                options: [
+                    { text: "I'm completely new to making money online", value: "beginner", score: { green: 3, amber: 2, red: 0, stuck: 0 } },
+                    { text: "I've tried a few things but haven't seen results yet", value: "tried", score: { green: 2, amber: 3, red: 1, stuck: 1 } },
+                    { text: "I've made some money online before", value: "experienced", score: { green: 4, amber: 1, red: 0, stuck: 0 } },
+                    { text: "I've tried everything and nothing works", value: "frustrated", score: { green: 0, amber: 1, red: 2, stuck: 4 } }
+                ]
+            },
+            {
+                id: 2,
+                question: "How much time can you realistically commit each week?",
+                options: [
+                    { text: "Less than 2 hours (really stretched thin)", value: "minimal", score: { green: 1, amber: 3, red: 2, stuck: 0 } },
+                    { text: "2-5 hours (can manage a bit each day)", value: "moderate", score: { green: 3, amber: 2, red: 0, stuck: 0 } },
+                    { text: "5-10 hours (decent time to dedicate)", value: "good", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "10+ hours (ready to go all in)", value: "full", score: { green: 4, amber: 0, red: 0, stuck: 0 } }
+                ]
+            },
+            {
+                id: 3,
+                question: "Do you use products/services you genuinely love?",
+                options: [
+                    { text: "Yes! I'm always recommending things to my mates", value: "enthusiast", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "I use things I like but don't talk about them much", value: "quiet", score: { green: 2, amber: 3, red: 0, stuck: 0 } },
+                    { text: "I'm not sure what I'd recommend", value: "unsure", score: { green: 0, amber: 2, red: 3, stuck: 1 } },
+                    { text: "I don't really use many products or services", value: "minimal", score: { green: 0, amber: 1, red: 3, stuck: 2 } }
+                ]
+            },
+            {
+                id: 4,
+                question: "How comfortable are you with social media?",
+                options: [
+                    { text: "I already post regularly on at least one platform", value: "active", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "I have accounts but don't post much", value: "passive", score: { green: 2, amber: 3, red: 0, stuck: 0 } },
+                    { text: "I barely use social media", value: "minimal", score: { green: 1, amber: 2, red: 3, stuck: 0 } },
+                    { text: "I'm willing to start fresh for this", value: "willing", score: { green: 3, amber: 2, red: 0, stuck: 0 } }
+                ]
+            },
+            {
+                id: 5,
+                question: "How do you feel about disclosing you earn commissions?",
+                options: [
+                    { text: "Totally fine - transparency is important", value: "comfortable", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "A bit awkward but I understand it's necessary", value: "awkward", score: { green: 2, amber: 3, red: 0, stuck: 0 } },
+                    { text: "Quite uncomfortable but I'll do it", value: "uncomfortable", score: { green: 1, amber: 2, red: 2, stuck: 0 } },
+                    { text: "Really uncomfortable - this might stop me", value: "blocker", score: { green: 0, amber: 1, red: 3, stuck: 2 } }
+                ]
+            },
+            {
+                id: 6,
+                question: "What's your main motivation?",
+                options: [
+                    { text: "Need extra income to help with bills/debt", value: "urgent", score: { green: 2, amber: 3, red: 1, stuck: 0 } },
+                    { text: "Want to eventually replace my job income", value: "replacement", score: { green: 4, amber: 1, red: 0, stuck: 0 } },
+                    { text: "Looking for flexible side income", value: "side", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "Just want to try something new", value: "curious", score: { green: 2, amber: 2, red: 1, stuck: 0 } }
+                ]
+            },
+            {
+                id: 7,
+                question: "How do you handle slow progress or setbacks?",
+                options: [
+                    { text: "I'm very patient - building takes time", value: "patient", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "I can stick with it for a few months", value: "moderate", score: { green: 3, amber: 2, red: 0, stuck: 0 } },
+                    { text: "I get frustrated after a few weeks", value: "impatient", score: { green: 1, amber: 2, red: 3, stuck: 1 } },
+                    { text: "I give up quickly if things don't work", value: "quick", score: { green: 0, amber: 1, red: 3, stuck: 3 } }
+                ]
+            },
+            {
+                id: 8,
+                question: "What's your starting budget?",
+                options: [
+                    { text: "£0 - need to start completely free", value: "none", score: { green: 2, amber: 3, red: 0, stuck: 0 } },
+                    { text: "£20-50 - can invest a little", value: "small", score: { green: 3, amber: 1, red: 0, stuck: 0 } },
+                    { text: "£50-100 - have some money for tools/courses", value: "moderate", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "£100+ - ready to invest in quality resources", value: "good", score: { green: 4, amber: 0, red: 0, stuck: 0 } }
+                ]
+            },
+            {
+                id: 9,
+                question: "How do you feel about creating content?",
+                options: [
+                    { text: "I enjoy it and already create content", value: "love", score: { green: 4, amber: 0, red: 0, stuck: 0 } },
+                    { text: "I'm willing to learn and give it a go", value: "willing", score: { green: 3, amber: 2, red: 0, stuck: 0 } },
+                    { text: "It makes me nervous but I'll try", value: "nervous", score: { green: 2, amber: 3, red: 1, stuck: 0 } },
+                    { text: "This really worries me - I hate being visible", value: "fearful", score: { green: 0, amber: 2, red: 3, stuck: 2 } }
+                ]
+            },
+            {
+                id: 10,
+                question: "What's your biggest concern about affiliate marketing?",
+                options: [
+                    { text: "I don't know where to start or what to do first", value: "confused", score: { green: 3, amber: 2, red: 0, stuck: 0 } },
+                    { text: "I'm worried I won't make any money", value: "money", score: { green: 2, amber: 3, red: 1, stuck: 0 } },
+                    { text: "I'm afraid people will think I'm pushy or salesy", value: "pushy", score: { green: 2, amber: 3, red: 0, stuck: 0 } },
+                    { text: "I don't have enough time to do it properly", value: "time", score: { green: 1, amber: 3, red: 2, stuck: 0 } }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        let scores = { green: 0, amber: 0, red: 0, stuck: 0 };
+
+        function initQuiz() {
+            renderQuestion();
+            updateProgress();
+        }
+
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+            const quizContent = document.getElementById('quizContent');
+            
+            const questionHTML = `
+                <div class="question-container active">
+                    <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <label class="option ${answers[question.id] === index ? 'selected' : ''}">
+                                <input type="radio" name="q${question.id}" value="${index}" 
+                                    ${answers[question.id] === index ? 'checked' : ''}>
+                                <span class="option-text">${option.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="nav-buttons">
+                        ${currentQuestion > 0 ? '<button class="btn btn-back" onclick="previousQuestion()">Back</button>' : '<div></div>'}
+                        <button class="btn btn-next" onclick="nextQuestion()" id="nextBtn" ${answers[question.id] === undefined ? 'disabled' : ''}>
+                            ${currentQuestion < questions.length - 1 ? 'Next' : 'See My Results'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            quizContent.innerHTML = questionHTML;
+            
+            document.querySelectorAll('.option').forEach((option, index) => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    const radio = option.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    const questionId = questions[currentQuestion].id;
+                    answers[questionId] = index;
+                    document.getElementById('nextBtn').disabled = false;
+                });
+            });
+        }
+
+        function nextQuestion() {
+            const questionId = questions[currentQuestion].id;
+            
+            if (answers[questionId] === undefined) {
+                return;
+            }
+            
+            const selectedOption = questions[currentQuestion].options[answers[questionId]];
+            scores.green += selectedOption.score.green;
+            scores.amber += selectedOption.score.amber;
+            scores.red += selectedOption.score.red;
+            scores.stuck += selectedOption.score.stuck;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                const questionId = questions[currentQuestion].id;
+                if (answers[questionId] !== undefined) {
+                    const selectedOption = questions[currentQuestion].options[answers[questionId]];
+                    scores.green -= selectedOption.score.green;
+                    scores.amber -= selectedOption.score.amber;
+                    scores.red -= selectedOption.score.red;
+                    scores.stuck -= selectedOption.score.stuck;
+                }
+                
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showResults() {
+            let resultType;
+            const maxScore = Math.max(scores.green, scores.amber, scores.red, scores.stuck);
+            
+            if (scores.green === maxScore) {
+                resultType = 'green';
+            } else if (scores.amber === maxScore) {
+                resultType = 'amber';
+            } else if (scores.stuck === maxScore) {
+                resultType = 'stuck';
+            } else {
+                resultType = 'red';
+            }
+            
+            document.getElementById('quizContent').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            document.querySelector('.quiz-header').style.display = 'none';
+            
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = getResultHTML(resultType);
+            resultsContainer.classList.add('active');
+        }
+
+        function getResultHTML(type) {
+            const results = {
+                green: {
+                    icon: '🚀',
+                    title: "You're Ready to Start TODAY!",
+                    subtitle: "Green Light - You have everything you need to succeed",
+                    content: `
+                        <div class="result-section">
+                            <h3>✨ Your Strengths</h3>
+                            <ul>
+                                <li>You have realistic time available to dedicate consistently</li>
+                                <li>You naturally enjoy sharing product recommendations</li>
+                                <li>You're comfortable with transparency and social media</li>
+                                <li>You understand building a business takes patience</li>
+                                <li>You're ready to create content and put yourself out there</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-box">
+                            <h4>🎯 Your Personalized Action Plan</h4>
+                            <p><strong>This Week:</strong></p>
+                            <ol>
+                                <li>Complete Lesson 3: How to Find Products to Promote</li>
+                                <li>Make your list of 10 products you already use and love</li>
+                                <li>Join Amazon Associates (follow the step-by-step in Lesson 4)</li>
+                                <li>Get your first affiliate link</li>
+                            </ol>
+                            <p><strong>Next Week:</strong></p>
+                            <ol>
+                                <li>Create your first 3 pieces of content using templates from Lesson 5</li>
+                                <li>Post them on your chosen platform</li>
+                                <li>Track your results in a simple spreadsheet</li>
+                            </ol>
+                            <p><strong>Within 30 Days:</strong> You should see your first clicks, and quite possibly your first sale!</p>
+                        </div>
+                        
+                        <div class="challenge-box">
+                            <h4>⚠️ Your Biggest Challenge to Watch For</h4>
+                            <p>Don't try to promote too many products at once. Stick with 3-5 maximum to start. It's better to know 3 products really well than to promote 15 you barely understand.</p>
+                        </div>
+                    `
+                },
+                amber: {
+                    icon: '🟡',
+                    title: "You Can Do This - With Some Adjustments",
+                    subtitle: "Amber Light - You have potential but need a modified approach",
+                    content: `
+                        <div class="result-section">
+                            <h3>✨ Your Strengths</h3>
+                            <ul>
+                                <li>You're realistic about the process and timeline</li>
+                                <li>You're willing to learn and adapt as you go</li>
+                                <li>You have some budget to invest in tools</li>
+                                <li>You understand this won't happen overnight</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="result-section challenges">
+                            <h3>⚠️ Challenges That Might Slow You Down</h3>
+                            <ul>
+                                <li>Limited time available each week</li>
+                                <li>Not very active on social media yet</li>
+                                <li>Unsure what products to promote</li>
+                                <li>Slight discomfort with transparency</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-box">
+                            <h4>🎯 Your Modified Action Plan</h4>
+                            <p><strong>Before You Start Promoting:</strong></p>
+                            <ol>
+                                <li>Spend one week just observing - browse affiliate content, see what resonates</li>
+                                <li>Make a list of products you use daily (Lesson 3 will help)</li>
+                                <li>Choose ONE social platform to focus on (don't spread yourself thin)</li>
+                                <li>Post 3-5 pieces of non-promotional content first to get comfortable</li>
+                            </ol>
+                            
+                            <p><strong>Your 30-Day Modified Plan:</strong></p>
+                            <ol>
+                                <li><strong>Week 1-2:</strong> Get comfortable posting (no affiliate links yet)</li>
+                                <li><strong>Week 3:</strong> Join your first affiliate programme</li>
+                                <li><strong>Week 4:</strong> Share your first affiliate post</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="challenge-box">
+                            <h4>⚠️ Your Biggest Challenge to Watch For</h4>
+                            <p>You might be tempted to quit if you don't see immediate results. Commit to 90 days before evaluating. Most people with your profile see their first real traction around Month 2-3.</p>
+                        </div>
+                        
+                        <div class="action-box">
+                            <h4>💡 Tips Specifically For You</h4>
+                            <p><strong>Time Management:</strong> Batch create content (2 hours on Sunday = content for the week). Use the templates in Lesson 5 - don't reinvent the wheel. Start with just 3 posts per week.</p>
+                            <p><strong>Social Media Comfort:</strong> You don't need to be on camera if you don't want. Start with simple text posts or graphics. Comment on others' content to build confidence first.</p>
+                            <p><strong>Finding Products:</strong> Start with products you're already buying monthly. Promote things your audience asks about. Begin with mid-priced items (£20-50).</p>
+                        </div>
+                    `
+                },
+                red: {
+                    icon: '🛑',
+                    title: "Not Quite Ready Yet - And That's Okay",
+                    subtitle: "Red Light - Consider addressing these challenges first",
+                    content: `
+                        <div class="result-section">
+                            <h3>💭 What Your Answers Tell Us</h3>
+                            <p>Based on your responses, affiliate marketing might not be the best fit right now. This doesn't mean you can't do it - just that the timing might not be ideal.</p>
+                        </div>
+                        
+                        <div class="result-section challenges">
+                            <h3>⚠️ Current Challenges</h3>
+                            <ul>
+                                <li>Very limited time available (less than 2 hours/week makes progress slow)</li>
+                                <li>Minimal social media presence to build on</li>
+                                <li>Unsure what products you'd feel comfortable recommending</li>
+                                <li>Discomfort with disclosure requirements</li>
+                                <li>Limited patience for slow initial progress</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-box">
+                            <h4>🎯 What to Do Instead Right Now</h4>
+                            <ol>
+                                <li><strong>Build a social media presence first:</strong> Spend 1-2 months just posting regularly (no affiliate links). Get comfortable being visible.</li>
+                                <li><strong>Identify products you love:</strong> Start noticing what you use daily and what you naturally recommend. Make a list.</li>
+                                <li><strong>Free up more time:</strong> Look at your schedule. Can you batch tasks? Reduce commitments? You'll need at least 3-5 hours/week to see meaningful results.</li>
+                                <li><strong>Work on transparency comfort:</strong> Practice disclosing small things. Read about the legal requirements. Understand why it's important.</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="challenge-box">
+                            <h4>⏰ Come Back When...</h4>
+                            <p>You can dedicate at least 3-5 hours per week, you're comfortable posting on social media regularly, you've identified 5+ products you genuinely love, and you're at peace with being transparent about earning commissions.</p>
+                        </div>
+                        
+                        <div class="result-section">
+                            <h3>💡 Alternative Starting Points</h3>
+                            <p>Consider starting with these lower-commitment options first:</p>
+                            <ul>
+                                <li>Share products you love with friends/family (no public posting) to practice talking about products</li>
+                                <li>Start a Pinterest board of products you love (lower pressure than Instagram/TikTok)</li>
+                                <li>Join Amazon's Associates programme just to practice creating links (don't need to promote yet)</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                stuck: {
+                    icon: '💭',
+                    title: "You're Feeling Stuck - Let's Address That",
+                    subtitle: "You've tried before and it hasn't worked - here's why",
+                    content: `
+                        <div class="result-section">
+                            <h3>💭 What Your Answers Tell Us</h3>
+                            <p>You've tried things before and haven't seen results. You're feeling frustrated, possibly overwhelmed, and wondering if this is even worth trying again. I get it - that's exhausting.</p>
+                            <p>Here's what's likely happening: You're not failing because affiliate marketing doesn't work. You're stuck because previous approaches weren't right for YOU.</p>
+                        </div>
+                        
+                        <div class="result-section challenges">
+                            <h3>🔍 Common Reasons People Get Stuck</h3>
+                            <ul>
+                                <li><strong>Information overload:</strong> Too many "gurus" saying different things</li>
+                                <li><strong>No clear starting point:</strong> Everything seems equally important and urgent</li>
+                                <li><strong>Perfectionism:</strong> Waiting for the "perfect" niche, product, or post</li>
+                                <li><strong>Giving up too soon:</strong> Expecting results in 2 weeks when it takes 2-3 months</li>
+                                <li><strong>Wrong products:</strong> Promoting things you don't actually use or believe in</li>
+                                <li><strong>Trying to do everything:</strong> TikTok, Instagram, Pinterest, email, blog... all at once</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-box">
+                            <h4>🔄 How to Break the Cycle</h4>
+                            <p><strong>Step 1: Reset Your Expectations</strong></p>
+                            <p>Month 1 goal: Make £0-20 (this is normal!)<br>
+                            Month 2 goal: Get your first consistent clicks<br>
+                            Month 3 goal: Make £50-150<br>
+                            Month 6 goal: £300-500/month</p>
+                            
+                            <p><strong>Step 2: Commit to ONE Thing</strong></p>
+                            <ol>
+                                <li>Pick ONE platform (TikTok, Instagram, or Pinterest)</li>
+                                <li>Pick ONE product category (don't promote random things)</li>
+                                <li>Commit to post 3x/week for 90 days minimum</li>
+                            </ol>
+                            
+                            <p><strong>Step 3: Follow THIS Exact Plan</strong></p>
+                            <ol>
+                                <li>Week 1: Make list of 5 products you ACTUALLY use daily</li>
+                                <li>Week 2: Join Amazon Associates + get your links</li>
+                                <li>Week 3-4: Post 6 pieces of content (use templates from Lesson 5)</li>
+                                <li>Month 2: Keep posting 3x/week, track what gets engagement</li>
+                                <li>Month 3: Double down on what's working, add 1-2 more products</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="challenge-box">
+                            <h4>⚠️ The Trap to Avoid This Time</h4>
+                            <p><strong>Don't jump to a new strategy after 2 weeks.</strong> You've probably done this before - tried something, didn't see immediate results, switched to something else. This time, commit to 90 days of ONE simple approach. Consistency beats perfection every time.</p>
+                        </div>
+                        
+                        <div class="result-section">
+                            <h3>💪 You CAN Do This</h3>
+                            <p>You're not stuck because you're bad at this. You're stuck because you haven't found the right approach yet. This course is specifically designed for people like you - complete beginners who've felt overwhelmed before.</p>
+                            <p>The difference this time? Simple, step-by-step instructions. No overwhelm. No guru BS. Just: do this, then this, then this.</p>
+                        </div>
+                    `
+                }
+            };
+            
+            const result = results[type];
+            return `
+                <div class="result-icon">${result.icon}</div>
+                <div class="result-title">${result.title}</div>
+                <div class="result-subtitle">${result.subtitle}</div>
+                <div class="result-content">
+                    ${result.content}
+                </div>
+                <button class="btn-restart" onclick="restartQuiz()">Retake Quiz</button>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = {};
+            scores = { green: 0, amber: 0, red: 0, stuck: 0 };
+            
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('quizContent').style.display = 'block';
+            document.querySelector('.progress-bar').style.display = 'block';
+            document.querySelector('.quiz-header').style.display = 'block';
+            
+            initQuiz();
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
